@@ -21,3 +21,9 @@ Evaluation Metric
 MAP@3 (Mean Average Precision at 3)
 
 Predictions are evaluated based on whether the correct answer appears within the top three predicted options and how highly it is ranked.
+
+## Current Best Results
+
+| Model | MAP@3 |
+|---------|--------|
+| Model 1 | 0.755 |
