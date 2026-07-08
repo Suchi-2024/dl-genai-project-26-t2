@@ -1,29 +1,58 @@
-# dl-genai-project-26-t2
-This repository is made to track, update and version controlling for the DL GenAI project of May Term 2026
+# Milestone 1 – NLP Foundation & Semantic Similarity
 
-## Project Overview
+## Overview
 
-This repository contains the work for the Introduction to Deep Learning and Generative AI Project (BSDA2001P).
+This milestone focuses on building the fundamental Natural Language Processing (NLP) concepts required for the Smart MCQ Solver Challenge. The objective is to understand text preprocessing, feature extraction, semantic similarity, and evaluation metrics before developing machine learning models.
 
-The objective of this project is to develop an intelligent system capable of solving multiple-choice questions by predicting the top three most probable answers for each question. The model is evaluated using Mean Average Precision at 3 (MAP@3), rewarding predictions that rank the correct answer higher.
+## Objectives
 
-Competition Description
+* Perform exploratory analysis of the MCQ dataset.
+* Understand the distribution of answer labels.
+* Apply text preprocessing techniques.
+* Build vocabulary using TF-IDF.
+* Measure semantic similarity using cosine similarity.
+* Understand and implement the MAP@3 evaluation metric.
+* Develop a basic TF-IDF similarity baseline.
 
-Each question in the dataset consists of:
+## Topics Covered
 
-A question prompt
-Five answer options (A, B, C, D, E)
+* Dataset Exploration
+* Text Normalization
+* Stop Word Removal
+* Vocabulary Analysis
+* TF-IDF Vectorization
+* Cosine Similarity
+* Majority Class Baseline
+* MAP@3 Evaluation
+* TF-IDF Similarity Pipeline
 
-The goal is to predict the three most likely correct options in ranked order.
+## Repository Contents
 
-Evaluation Metric
+| File                          | Description                                                                                            |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `Milestone_1_Solutions.ipynb` | Complete notebook containing all milestone questions, code implementations, outputs, and observations. |
 
-MAP@3 (Mean Average Precision at 3)
+## Learning Outcomes
 
-Predictions are evaluated based on whether the correct answer appears within the top three predicted options and how highly it is ranked.
+After completing this milestone, I gained practical experience in:
 
-## Current Best Results
+* Cleaning and preprocessing textual data.
+* Extracting sparse text representations using TF-IDF.
+* Measuring semantic similarity between prompts and answer options.
+* Evaluating ranking-based predictions using MAP@3.
+* Establishing a baseline approach for multiple-choice question answering.
 
-| Model | MAP@3 |
-|---------|--------|
-| Model 1 | 0.755 |
+## Technologies Used
+
+* Python
+* NumPy
+* Pandas
+* Scikit-learn
+
+## Dataset
+
+Smart MCQ Solver Challenge Dataset (Kaggle)
+
+## Status
+
+**Completed**
