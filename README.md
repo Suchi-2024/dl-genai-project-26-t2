@@ -1,54 +1,56 @@
-# Milestone 3 – Retrieval-Augmented Generation (RAG)
+# Milestone 4 – Multiple Choice Modeling & LoRA Fine-Tuning
 
 ## Overview
 
-This milestone introduces Retrieval-Augmented Generation (RAG) for multiple-choice question answering. The objective is to retrieve relevant contextual information using dense vector search and improve reasoning with retrieval and re-ranking techniques.
+This milestone focuses on preparing data for transformer-based multiple-choice models and performing parameter-efficient fine-tuning using LoRA. The objective is to understand multiple-choice data formatting, tokenization, Hugging Face Trainer, and efficient transformer adaptation.
 
 ## Objectives
 
-- Build a vector database using sentence embeddings.
-- Retrieve relevant documents using FAISS.
-- Implement dense retrieval with Sentence Transformers.
-- Apply CrossEncoder re-ranking.
-- Perform zero-shot classification using retrieved context.
-- Evaluate a complete RAG pipeline using MAP@3.
+- Format MCQ data for transformer models.
+- Prepare tokenized multiple-choice inputs.
+- Understand multiple-choice model outputs.
+- Apply LoRA for parameter-efficient fine-tuning.
+- Create Hugging Face datasets.
+- Perform a small fine-tuning experiment.
+- Run inference and interpret output probabilities.
 
 ## Topics Covered
 
-- Vector Databases
-- Sentence Embeddings
-- FAISS Index
-- Dense Retrieval
-- CrossEncoder Re-ranking
-- Context Augmentation
-- Retrieval-Augmented Generation (RAG)
-- Zero-Shot Classification
-- MAP@3 Evaluation
+- Multiple Choice Data Formatting
+- Label Encoding
+- BERT Tokenization
+- AutoModelForMultipleChoice
+- Logits & Loss Computation
+- LoRA Fine-Tuning
+- PEFT
+- Hugging Face Dataset
+- Hugging Face Trainer
+- Multiple Choice Inference
+- Softmax Probabilities
 
 ## Repository Contents
 
 | File | Description |
 |------|-------------|
-| `Milestone-3-Solutions.ipynb` | Complete notebook containing all milestone questions, implementations, outputs, and observations. |
+| `Milestone-4-Solutions.ipynb` | Complete notebook containing all milestone questions, implementations, outputs, and observations. |
 
 ## Learning Outcomes
 
 After completing this milestone, I gained practical experience in:
 
-- Building dense vector databases.
-- Retrieving relevant contextual documents.
-- Improving predictions through retrieval and re-ranking.
-- Integrating retrieved context into downstream NLP tasks.
-- Evaluating retrieval-based pipelines using MAP@3.
+- Preparing datasets for multiple-choice transformers.
+- Understanding model inputs, logits, and loss functions.
+- Applying LoRA for efficient fine-tuning.
+- Training transformer models using the Hugging Face Trainer API.
+- Performing inference and interpreting prediction probabilities.
 
 ## Technologies Used
 
 - Python
-- Sentence Transformers
-- FAISS
-- CrossEncoder
+- PyTorch
 - Hugging Face Transformers
-- Scikit-learn
+- PEFT (LoRA)
+- Hugging Face Datasets
 
 ## Dataset
 
