@@ -27,3 +27,5 @@ Predictions are evaluated based on whether the correct answer appears within the
 | Model | MAP@3 |
 |---------|--------|
 | Model 1 | 0.755 |
+| Model 2 | 0.730 |
+| Model 3 | 0.761 |
