@@ -1,56 +1,53 @@
-# Milestone 2 – Transformers & Contextual Embeddings
+# Milestone 3 – Retrieval-Augmented Generation (RAG)
 
 ## Overview
 
-This milestone introduces Transformer-based models for Natural Language Processing. The objective is to understand tokenization, contextual embeddings, attention mechanisms, sentence similarity, zero-shot classification, and text generation using Hugging Face Transformers.
+This milestone introduces Retrieval-Augmented Generation (RAG) for multiple-choice question answering. The objective is to retrieve relevant contextual information using dense vector search and improve reasoning with retrieval and re-ranking techniques.
 
 ## Objectives
 
-- Understand Transformer architecture.
-- Explore BERT tokenizer and embeddings.
-- Learn self-attention and hidden representations.
-- Generate contextual sentence embeddings.
-- Compare TF-IDF with transformer embeddings.
-- Perform zero-shot text classification.
-- Generate text using a Small Language Model (SLM).
+- Build a vector database using sentence embeddings.
+- Retrieve relevant documents using FAISS.
+- Implement dense retrieval with Sentence Transformers.
+- Apply CrossEncoder re-ranking.
+- Perform zero-shot classification using retrieved context.
+- Evaluate a complete RAG pipeline using MAP@3.
 
 ## Topics Covered
 
-- Hugging Face Datasets
-- BERT Tokenizer
-- Tokenization
-- Transformer Embeddings
-- Self-Attention
-- Sentence Transformers
-- Semantic Similarity
-- TF-IDF vs Sentence Embeddings
+- Vector Databases
+- Sentence Embeddings
+- FAISS Index
+- Dense Retrieval
+- CrossEncoder Re-ranking
+- Context Augmentation
+- Retrieval-Augmented Generation (RAG)
 - Zero-Shot Classification
-- Text Generation using FLAN-T5
+- MAP@3 Evaluation
 
 ## Repository Contents
 
 | File | Description |
 |------|-------------|
-| `Milestone-2-Solutions.ipynb` | Complete notebook containing all milestone questions, implementations, outputs, and observations. |
+| `Milestone-3-Solutions.ipynb` | Complete notebook containing all milestone questions, implementations, outputs, and observations. |
 
 ## Learning Outcomes
 
 After completing this milestone, I gained practical experience in:
 
-- Understanding Transformer-based NLP models.
-- Tokenizing text using BERT.
-- Working with contextual embeddings.
-- Measuring semantic similarity using sentence embeddings.
-- Performing zero-shot classification.
-- Generating responses using pre-trained language models.
+- Building dense vector databases.
+- Retrieving relevant contextual documents.
+- Improving predictions through retrieval and re-ranking.
+- Integrating retrieved context into downstream NLP tasks.
+- Evaluating retrieval-based pipelines using MAP@3.
 
 ## Technologies Used
 
 - Python
-- PyTorch
-- Hugging Face Transformers
-- Hugging Face Datasets
 - Sentence Transformers
+- FAISS
+- CrossEncoder
+- Hugging Face Transformers
 - Scikit-learn
 
 ## Dataset
