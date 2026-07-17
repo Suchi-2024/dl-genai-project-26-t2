@@ -1,31 +1,62 @@
-# dl-genai-project-26-t2
-This repository is made to track, update and version controlling for the DL GenAI project of May Term 2026
+# Milestone 2 – Transformers & Contextual Embeddings
 
-## Project Overview
+## Overview
 
-This repository contains the work for the Introduction to Deep Learning and Generative AI Project (BSDA2001P).
+This milestone introduces Transformer-based models for Natural Language Processing. The objective is to understand tokenization, contextual embeddings, attention mechanisms, sentence similarity, zero-shot classification, and text generation using Hugging Face Transformers.
 
-The objective of this project is to develop an intelligent system capable of solving multiple-choice questions by predicting the top three most probable answers for each question. The model is evaluated using Mean Average Precision at 3 (MAP@3), rewarding predictions that rank the correct answer higher.
+## Objectives
 
-Competition Description
+- Understand Transformer architecture.
+- Explore BERT tokenizer and embeddings.
+- Learn self-attention and hidden representations.
+- Generate contextual sentence embeddings.
+- Compare TF-IDF with transformer embeddings.
+- Perform zero-shot text classification.
+- Generate text using a Small Language Model (SLM).
 
-Each question in the dataset consists of:
+## Topics Covered
 
-A question prompt
-Five answer options (A, B, C, D, E)
+- Hugging Face Datasets
+- BERT Tokenizer
+- Tokenization
+- Transformer Embeddings
+- Self-Attention
+- Sentence Transformers
+- Semantic Similarity
+- TF-IDF vs Sentence Embeddings
+- Zero-Shot Classification
+- Text Generation using FLAN-T5
 
-The goal is to predict the three most likely correct options in ranked order.
+## Repository Contents
 
-Evaluation Metric
+| File | Description |
+|------|-------------|
+| `Milestone-2-Solutions.ipynb` | Complete notebook containing all milestone questions, implementations, outputs, and observations. |
 
-MAP@3 (Mean Average Precision at 3)
+## Learning Outcomes
 
-Predictions are evaluated based on whether the correct answer appears within the top three predicted options and how highly it is ranked.
+After completing this milestone, I gained practical experience in:
 
-## Current Best Results
+- Understanding Transformer-based NLP models.
+- Tokenizing text using BERT.
+- Working with contextual embeddings.
+- Measuring semantic similarity using sentence embeddings.
+- Performing zero-shot classification.
+- Generating responses using pre-trained language models.
 
-| Model | MAP@3 |
-|---------|--------|
-| Model 1 | 0.755 |
-| Model 2 | 0.730 |
-| Model 3 | 0.761 |
+## Technologies Used
+
+- Python
+- PyTorch
+- Hugging Face Transformers
+- Hugging Face Datasets
+- Sentence Transformers
+- Scikit-learn
+
+## Dataset
+
+Smart MCQ Solver Challenge Dataset (Kaggle)
+
+## Status
+
+**Completed**
