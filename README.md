@@ -1,56 +1,56 @@
-# Milestone 4 – Multiple Choice Modeling & LoRA Fine-Tuning
+# Milestone 5 – Model Ensembling & Prediction Ranking
 
 ## Overview
 
-This milestone focuses on preparing data for transformer-based multiple-choice models and performing parameter-efficient fine-tuning using LoRA. The objective is to understand multiple-choice data formatting, tokenization, Hugging Face Trainer, and efficient transformer adaptation.
+This milestone focuses on improving multiple-choice question answering through model ensembling. The objective is to combine predictions from multiple transformer models, analyze confidence scores, compare individual and ensemble predictions, and evaluate the final performance using the MAP@3 metric.
 
 ## Objectives
 
-- Format MCQ data for transformer models.
-- Prepare tokenized multiple-choice inputs.
-- Understand multiple-choice model outputs.
-- Apply LoRA for parameter-efficient fine-tuning.
-- Create Hugging Face datasets.
-- Perform a small fine-tuning experiment.
-- Run inference and interpret output probabilities.
+- Load multiple fine-tuned transformer models.
+- Perform inference using DeBERTa and RoBERTa.
+- Apply Softmax to obtain class probabilities.
+- Combine predictions using weighted probability averaging.
+- Rank answer options based on ensemble probabilities.
+- Compare individual model predictions with ensemble predictions.
+- Evaluate the final ensemble using MAP@3.
 
 ## Topics Covered
 
-- Multiple Choice Data Formatting
-- Label Encoding
-- BERT Tokenization
-- AutoModelForMultipleChoice
-- Logits & Loss Computation
-- LoRA Fine-Tuning
-- PEFT
-- Hugging Face Dataset
-- Hugging Face Trainer
-- Multiple Choice Inference
-- Softmax Probabilities
+- Transformer Model Inference
+- Softmax Probability Calculation
+- Weighted Probability Averaging
+- Model Ensembling
+- Top-1 Prediction Comparison
+- Top-3 Prediction Ranking
+- Confidence Score Analysis
+- Prediction Agreement Analysis
+- MAP@3 Evaluation
 
 ## Repository Contents
 
 | File | Description |
 |------|-------------|
-| `Milestone-4-Solutions.ipynb` | Complete notebook containing all milestone questions, implementations, outputs, and observations. |
+| `Milestone-5-Solutions.ipynb` | Complete notebook containing all milestone questions, implementations, outputs, and observations. |
 
 ## Learning Outcomes
 
 After completing this milestone, I gained practical experience in:
 
-- Preparing datasets for multiple-choice transformers.
-- Understanding model inputs, logits, and loss functions.
-- Applying LoRA for efficient fine-tuning.
-- Training transformer models using the Hugging Face Trainer API.
-- Performing inference and interpreting prediction probabilities.
+- Performing inference using multiple transformer models.
+- Combining predictions through weighted ensembling.
+- Ranking answer choices based on probability distributions.
+- Comparing individual model predictions with ensemble predictions.
+- Analyzing prediction confidence and agreement between models.
+- Evaluating ensemble performance using the MAP@3 metric.
 
 ## Technologies Used
 
 - Python
 - PyTorch
 - Hugging Face Transformers
-- PEFT (LoRA)
-- Hugging Face Datasets
+- NumPy
+- Pandas
+- Scikit-learn
 
 ## Dataset
 
