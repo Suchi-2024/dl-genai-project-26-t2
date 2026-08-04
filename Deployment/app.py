@@ -110,27 +110,80 @@ def get_best_context(question: str, pipeline: dict) -> str:
 
 
 def predict(prompt: str, options: dict, pipeline: dict):
-    """options: dict like {"A": "...", "B": "...", ...} (5 entries)"""
+    """
+    options: dict like {"A": "...", "B": "...", ...}
+    """
+
+    # Retrieve best context
     context = get_best_context(prompt, pipeline)
 
     labels = list(options.keys())
+
+    # Build text exactly as during training
     texts = [
         f"{context} [SEP] {prompt} [SEP] {options[label]}"
         for label in labels
     ]
 
+    # TF-IDF features
     X_word = pipeline["word_vec"].transform(texts)
     X_char = pipeline["char_vec"].transform(texts)
 
-    num_feats = [[overlap(context, options[label]), len(options[label])] for label in labels]
+    # ---------------------------------------------------------
+    # Numeric Features (must match notebook exactly)
+    # ---------------------------------------------------------
+
+    # Encode prompt ONCE
+    prompt_emb = pipeline["retriever"].encode(
+        [clean_prompt(prompt)],
+        normalize_embeddings=True,
+        convert_to_numpy=True
+    ).astype(np.float32)[0]
+
+    num_feats = []
+
+    for label in labels:
+
+        option_text = options[label]
+
+        # Encode option
+        option_emb = pipeline["retriever"].encode(
+            [option_text],
+            normalize_embeddings=True,
+            convert_to_numpy=True
+        ).astype(np.float32)[0]
+
+        # Same as notebook:
+        # (prompt_emb * option_emb).sum(axis=1)
+        semantic_similarity = float(np.dot(prompt_emb, option_emb))
+
+        num_feats.append([
+            overlap(context, option_text),   # context_overlap
+            len(option_text),                # option_len
+            semantic_similarity              # semantic_similarity
+        ])
+
     X_num = csr_matrix(np.array(num_feats, dtype=float))
 
+    # ---------------------------------------------------------
+    # Final feature matrix
+    # ---------------------------------------------------------
+
     X = hstack([X_word, X_char, X_num]).tocsr()
+
+    # Uncomment for debugging
+    # st.write("Input features:", X.shape[1])
+    # st.write("Model expects:", pipeline["model"].n_features_)
+
     scores = pipeline["model"].predict(X)
 
-    ranked = sorted(zip(labels, scores), key=lambda t: t[1], reverse=True)
-    return ranked, context
+    ranked = sorted(
+        zip(labels, scores),
+        key=lambda x: x[1],
+        reverse=True
+    )
 
+    return ranked, context
 
 # ----------------------------------------------------------------
 # UI
@@ -172,6 +225,9 @@ if submitted:
         with st.expander("All 5 options ranked"):
             for label, score in ranked:
                 st.write(f"{label}: {score:.3f} — {options[label]}")
+                
+st.write("Input shape:", X.shape)
+st.write("Model expects:", pipeline["model"].n_features_)
 
 st.divider()
 st.caption(
