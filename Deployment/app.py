@@ -4,7 +4,7 @@ Streamlit app for Streamlit Cloud.
 
 Pipeline (mirrors the notebook exactly):
   1. Clean the prompt
-  2. Retrieve top-20 candidate passages (MiniLM bi-encoder + FAISS)
+  2. Retrieve top-20 candidate passages (BGE-base bi-encoder + FAISS)
   3. Rerank with a cross-encoder, keep the single best passage
   4. Build context+prompt+option text for each of the 5 options
   5. TF-IDF (word + char) + 2 numeric features -> LightGBM ranker
@@ -28,7 +28,7 @@ TOP_K = 20
 # ARTIFACT_DIR = "artifacts"
 BASE_DIR = Path(__file__).parent
 ARTIFACT_DIR = BASE_DIR / "artifacts"
-RETRIEVER_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+RETRIEVER_NAME = "BAAI/bge-base-en-v1.5"
 CROSS_ENCODER_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 
 REMOVE_PHRASES = [
@@ -84,7 +84,20 @@ def load_pipeline():
 
 
 def retrieve_docs(question: str, pipeline: dict, k: int = TOP_K):
-    emb = pipeline["retriever"].encode([clean_prompt(question)], normalize_embeddings=True)
+    # emb = pipeline["retriever"].encode([clean_prompt(question)], normalize_embeddings=True)
+    # _, ids = pipeline["index"].search(emb, k)
+    emb = pipeline["retriever"].encode(
+        [clean_prompt(question)],
+        normalize_embeddings=True,
+        convert_to_numpy=True
+    ).astype(np.float32)
+
+    if emb.shape[1] != pipeline["index"].d:
+        raise ValueError(
+            f"Embedding dimension {emb.shape[1]} "
+            f"does not match FAISS index dimension {pipeline['index'].d}"
+        )
+
     _, ids = pipeline["index"].search(emb, k)
     return [pipeline["knowledge"][i] for i in ids[0]]
 
@@ -162,7 +175,7 @@ if submitted:
 
 st.divider()
 st.caption(
-    "Pipeline: MiniLM bi-encoder retrieval (top-20) \u2192 MS-MARCO cross-encoder rerank "
+    "Pipeline: BGE-base bi-encoder retrieval (top-20) \u2192 MS-MARCO cross-encoder rerank "
     "\u2192 TF-IDF + numeric features \u2192 LightGBM ranker. "
     "See the [project report] for full architecture details."
 )
