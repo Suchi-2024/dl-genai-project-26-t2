@@ -1,6 +1,6 @@
 """
 Smart MCQ Solver — Model 3 (Enhanced RAG + LightGBM Ranker)
-Streamlit app for Hugging Face Spaces.
+Streamlit app for Streamlit Cloud.
 
 Pipeline (mirrors the notebook exactly):
   1. Clean the prompt
@@ -19,12 +19,15 @@ import numpy as np
 import streamlit as st
 from scipy.sparse import csr_matrix, hstack
 from sentence_transformers import SentenceTransformer, CrossEncoder
+from pathlib import Path
 
 # ----------------------------------------------------------------
 # Config
 # ----------------------------------------------------------------
 TOP_K = 20
-ARTIFACT_DIR = "artifacts"
+# ARTIFACT_DIR = "artifacts"
+BASE_DIR = Path(__file__).parent
+ARTIFACT_DIR = BASE_DIR / "artifacts"
 RETRIEVER_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 CROSS_ENCODER_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 
@@ -54,16 +57,16 @@ def overlap(a: str, b: str) -> int:
 # ----------------------------------------------------------------
 @st.cache_resource(show_spinner="Loading models and knowledge base (first request only)...")
 def load_pipeline():
-    with open(f"{ARTIFACT_DIR}/knowledge.json") as f:
+    with open(ARTIFACT_DIR/"knowledge.json") as f:
         knowledge = json.load(f)
 
     index = faiss.read_index(f"{ARTIFACT_DIR}/kb_index.faiss")
 
-    with open(f"{ARTIFACT_DIR}/word_vectorizer.pkl", "rb") as f:
+    with open(ARTIFACT_DIR/"word_vectorizer.pkl", "rb") as f:
         word_vec = pickle.load(f)
-    with open(f"{ARTIFACT_DIR}/char_vectorizer.pkl", "rb") as f:
+    with open(ARTIFACT_DIR/"char_vectorizer.pkl", "rb") as f:
         char_vec = pickle.load(f)
-    with open(f"{ARTIFACT_DIR}/lgbm_ranker.pkl", "rb") as f:
+    with open(ARTIFACT_DIR/"lgbm_ranker.pkl", "rb") as f:
         model = pickle.load(f)
 
     retriever = SentenceTransformer(RETRIEVER_NAME)
@@ -121,7 +124,7 @@ def predict(prompt: str, options: dict, pipeline: dict):
 # ----------------------------------------------------------------
 st.set_page_config(page_title="Smart MCQ Solver", page_icon="🧠", layout="centered")
 st.title("🧠 Smart MCQ Solver")
-st.caption("Model 3 (Enhanced) — Retrieval-Augmented Ranking. Public leaderboard MAP@3 = 0.76059")
+st.caption("Model 3 (Enhanced) — Retrieval-Augmented Ranking. Public leaderboard MAP@3 = 0.76142")
 
 pipeline = load_pipeline()
 
