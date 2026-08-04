@@ -225,9 +225,7 @@ if submitted:
         with st.expander("All 5 options ranked"):
             for label, score in ranked:
                 st.write(f"{label}: {score:.3f} — {options[label]}")
-                
-st.write("Input shape:", X.shape)
-st.write("Model expects:", pipeline["model"].n_features_)
+
 
 st.divider()
 st.caption(
