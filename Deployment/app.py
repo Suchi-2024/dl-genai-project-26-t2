@@ -189,8 +189,14 @@ def predict(prompt: str, options: dict, pipeline: dict):
 # ----------------------------------------------------------------
 # UI
 # ----------------------------------------------------------------
-st.set_page_config(page_title="Smart MCQ Solver", page_icon="🧠", layout="centered")
 
+st.set_page_config(
+    page_title="Smart MCQ Solver",
+    page_icon="🧠",
+    layout="centered"
+)
+
+# ---------------- Sidebar ----------------
 with st.sidebar:
     st.title("🧠 Smart MCQ Solver")
 
@@ -199,82 +205,112 @@ with st.sidebar:
     st.success("Model 3 (Enhanced RAG)")
 
     st.markdown("""
-- 🔍 BGE-base Retriever
-- 📚 FAISS Vector Search
-- 🎯 CrossEncoder Reranker
-- 📄 TF-IDF Features
-- 🌳 LightGBM Ranker
+- 🔍 **BGE-base Retriever**
+- 📚 **FAISS Vector Search**
+- 🎯 **CrossEncoder Reranker**
+- 📄 **TF-IDF Features**
+- 🌳 **LightGBM Ranker**
 """)
 
     st.metric("Public MAP@3", "0.76142")
 
-    st.markdown("---")
+    st.divider()
 
-    st.caption("Developed by Suchintika Sarkar")
+    st.caption("Developed by")
+    st.write("**Suchintika Sarkar**")
 
+# ---------------- Header ----------------
 st.title("🧠 Smart MCQ Solver")
 
-st.markdown(
-"""
-Rank multiple-choice answers using a Retrieval-Augmented Generation (RAG) pipeline combining **BGE embeddings**, **FAISS retrieval**, **CrossEncoder reranking**, and a **LightGBM Ranker**.
+st.markdown("""
+Rank multiple-choice answers using a **Retrieval-Augmented Generation (RAG)** pipeline combining **BGE embeddings**, **FAISS retrieval**, **CrossEncoder reranking**, and a **LightGBM Ranker**.
 
 🏆 **Public Leaderboard MAP@3:** **0.76142**
-"""
-)
+""")
 
 st.divider()
 
 pipeline = load_pipeline()
 
+# ---------------- Input Form ----------------
 with st.form("mcq_form"):
-    prompt = st.text_area("Question", placeholder="e.g. What is the primary source of energy in stars?", height=80)
+
+    prompt = st.text_area(
+        "Question",
+        placeholder="e.g. What is the primary source of energy in stars?",
+        height=90,
+    )
+
     col1, col2 = st.columns(2)
+
     with col1:
         opt_a = st.text_input("Option A")
         opt_b = st.text_input("Option B")
         opt_c = st.text_input("Option C")
+
     with col2:
         opt_d = st.text_input("Option D")
         opt_e = st.text_input("Option E")
-    submitted = st.form_submit_button("Predict", type="primary")
 
+    submitted = st.form_submit_button(
+        "🚀 Predict",
+        use_container_width=True,
+        type="primary"
+    )
+
+# ---------------- Prediction ----------------
 if submitted:
-    options = {"A": opt_a, "B": opt_b, "C": opt_c, "D": opt_d, "E": opt_e}
-    if not prompt.strip() or any(not v.strip() for v in options.values()):
+
+    options = {
+        "A": opt_a,
+        "B": opt_b,
+        "C": opt_c,
+        "D": opt_d,
+        "E": opt_e,
+    }
+
+    if not prompt.strip() or any(not x.strip() for x in options.values()):
         st.error("Please fill in the question and all 5 options.")
+
     else:
-        with st.spinner("Retrieving context, reranking, and scoring..."):
-            ranked, context, confidence = predict(prompt, options, pipeline)
 
-        st.subheader("Top-3 Predicted Answers")
+        with st.spinner("🔍 Retrieving knowledge and ranking answers..."):
+            ranked, context = predict(prompt, options, pipeline)
+
+        st.subheader("🏆 Top-3 Predicted Answers")
+
         medals = ["🥇", "🥈", "🥉"]
-        # for i, (label, score) in enumerate(ranked[:3]):
-        #     st.markdown(f"{medals[i]} **Option {label}**: {options[label]}  \n*Ranker score: {score:.3f}*")
-        score_dict = {label: confidence[idx] for idx, label in enumerate(options.keys())}
 
-        for i, (label, _) in enumerate(ranked[:3]):
+        for i, (label, score) in enumerate(ranked[:3]):
 
-            st.success(
-                f"""{medals[i]} Prediction #{i+1}
+            with st.container(border=True):
 
-        **Option {label}**
+                st.markdown(f"### {medals[i]} Prediction #{i+1}")
 
-        {options[label]}
+                st.markdown(f"**Option {label}**")
 
-        Confidence: **{score_dict[label]*100:.1f}%**
-        """
-            )
-        with st.expander("Retrieved supporting context (used for this prediction)"):
-            st.write(context)
+                st.write(options[label])
 
-        with st.expander("All 5 options ranked"):
-            for label, score in ranked:
-                st.write(f"{label}: {score:.3f} — {options[label]}")
+                st.metric(
+                    label="Ranking Score",
+                    value=f"{score:.3f}"
+                )
 
+        with st.expander("📚 Retrieved Supporting Context"):
+            st.info(context)
 
+        with st.expander("📊 Complete Ranking"):
+
+            for rank, (label, score) in enumerate(ranked, start=1):
+
+                st.write(
+                    f"**{rank}. Option {label}** — {score:.3f}"
+                )
+
+# ---------------- Footer ----------------
 st.divider()
+
 st.caption(
-    "Pipeline: BGE-base bi-encoder retrieval (top-20) \u2192 MS-MARCO cross-encoder rerank "
-    "\u2192 TF-IDF + numeric features \u2192 LightGBM ranker. "
-    "See the [project report] for full architecture details."
+    "BGE-base Retriever → FAISS Search → CrossEncoder Reranker → "
+    "TF-IDF Features → LightGBM Ranker"
 )
