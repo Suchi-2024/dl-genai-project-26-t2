@@ -20,6 +20,7 @@ import streamlit as st
 from scipy.sparse import csr_matrix, hstack
 from sentence_transformers import SentenceTransformer, CrossEncoder
 from pathlib import Path
+from scipy.special import softmax
 
 # ----------------------------------------------------------------
 # Config
@@ -176,21 +177,52 @@ def predict(prompt: str, options: dict, pipeline: dict):
     # st.write("Model expects:", pipeline["model"].n_features_)
 
     scores = pipeline["model"].predict(X)
-
+    confidence = softmax(scores)
     ranked = sorted(
         zip(labels, scores),
         key=lambda x: x[1],
         reverse=True
     )
 
-    return ranked, context
+    return ranked, context, confidence
 
 # ----------------------------------------------------------------
 # UI
 # ----------------------------------------------------------------
 st.set_page_config(page_title="Smart MCQ Solver", page_icon="🧠", layout="centered")
+
+with st.sidebar:
+    st.title("🧠 Smart MCQ Solver")
+
+    st.markdown("### 🚀 Model Pipeline")
+
+    st.success("Model 3 (Enhanced RAG)")
+
+    st.markdown("""
+- 🔍 BGE-base Retriever
+- 📚 FAISS Vector Search
+- 🎯 CrossEncoder Reranker
+- 📄 TF-IDF Features
+- 🌳 LightGBM Ranker
+""")
+
+    st.metric("Public MAP@3", "0.76142")
+
+    st.markdown("---")
+
+    st.caption("Developed by Suchintika Sarkar")
+
 st.title("🧠 Smart MCQ Solver")
-st.caption("Model 3 (Enhanced) — Retrieval-Augmented Ranking. Public leaderboard MAP@3 = 0.76142")
+
+st.markdown(
+"""
+Rank multiple-choice answers using a Retrieval-Augmented Generation (RAG) pipeline combining **BGE embeddings**, **FAISS retrieval**, **CrossEncoder reranking**, and a **LightGBM Ranker**.
+
+🏆 **Public Leaderboard MAP@3:** **0.76142**
+"""
+)
+
+st.divider()
 
 pipeline = load_pipeline()
 
@@ -212,13 +244,26 @@ if submitted:
         st.error("Please fill in the question and all 5 options.")
     else:
         with st.spinner("Retrieving context, reranking, and scoring..."):
-            ranked, context = predict(prompt, options, pipeline)
+            ranked, context, confidence = predict(prompt, options, pipeline)
 
         st.subheader("Top-3 Predicted Answers")
         medals = ["🥇", "🥈", "🥉"]
-        for i, (label, score) in enumerate(ranked[:3]):
-            st.markdown(f"{medals[i]} **Option {label}**: {options[label]}  \n*Ranker score: {score:.3f}*")
+        # for i, (label, score) in enumerate(ranked[:3]):
+        #     st.markdown(f"{medals[i]} **Option {label}**: {options[label]}  \n*Ranker score: {score:.3f}*")
+        score_dict = {label: confidence[idx] for idx, label in enumerate(options.keys())}
 
+        for i, (label, _) in enumerate(ranked[:3]):
+
+            st.success(
+                f"""{medals[i]} Prediction #{i+1}
+
+        **Option {label}**
+
+        {options[label]}
+
+        Confidence: **{score_dict[label]*100:.1f}%**
+        """
+            )
         with st.expander("Retrieved supporting context (used for this prediction)"):
             st.write(context)
 
