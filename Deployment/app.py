@@ -184,7 +184,7 @@ def predict(prompt: str, options: dict, pipeline: dict):
         reverse=True
     )
 
-    return ranked, context, confidence
+    return ranked, context
 
 # ----------------------------------------------------------------
 # UI
@@ -292,9 +292,10 @@ if submitted:
                 st.write(options[label])
 
                 st.metric(
-                    label="Ranking Score",
+                    label="Model Ranking Score",
                     value=f"{score:.3f}"
                 )
+                st.caption("Higher scores indicate more likely answers.")
 
         with st.expander("📚 Retrieved Supporting Context"):
             st.info(context)
